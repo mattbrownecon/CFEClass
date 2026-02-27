@@ -1,0 +1,569 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Problem Set 5 Sample Solutions},
+  pdfauthor={Matt Brown},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+  \newcolumntype{d}{S[
+    input-open-uncertainty=,
+    input-close-uncertainty=,
+    parse-numbers = false,
+    table-align-text-pre=false,
+    table-align-text-post=false
+  ]}
+  
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Problem Set 5 Sample Solutions}
+\author{Matt Brown}
+\date{2023-05-10}
+
+\begin{document}
+\maketitle
+
+\hypertarget{part-1}{%
+\section{Part 1}\label{part-1}}
+
+\hypertarget{a}{%
+\subsubsection{1.A}\label{a}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df\_EV, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ price, }\AttributeTok{y =}\NormalTok{ quantity)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{\textquotesingle{}lm\textquotesingle{}}\NormalTok{, }\AttributeTok{color =} \StringTok{\textquotesingle{}grey\textquotesingle{}}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{linetype =} \StringTok{\textquotesingle{}dashed\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_hline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{0}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{\textquotesingle{}Price ($000s)\textquotesingle{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textquotesingle{}Quantity (000s)\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{../output/sample_solution_files/figure-latex/1.A-1.pdf}
+
+\hypertarget{b}{%
+\subsubsection{1.B}\label{b}}
+
+This relationship is not plausibly causal. The plot shows that expensive
+vehicles are purchased less, which is consistent with the standard
+intuition of a (causal) downward sloping demand curve. However,
+confounders could also create a relationship between price and quantity.
+For example, if higher quality vehicles are also more expensive (seems
+plausible!) then there would be a spurious \emph{positive} relationship
+between price and quantity. If quality is an omitted variable, then the
+true causal effect of price on quantity is steeper than the best fit
+line in this plot.
+
+\hypertarget{c-and-1.d}{%
+\subsubsection{1.C and 1.D}\label{c-and-1.d}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{scc }\OtherTok{=} \DecValTok{190} \CommentTok{\# social cost of carbon}
+\NormalTok{df\_EV }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{co2cost =}\NormalTok{ co2}\SpecialCharTok{*}\NormalTok{scc)}
+
+\NormalTok{avg\_EV\_co2cost }\OtherTok{=} \FunctionTok{mean}\NormalTok{(df\_EV[df\_EV}\SpecialCharTok{$}\NormalTok{ev}\SpecialCharTok{==}\DecValTok{1}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{co2cost)}
+\NormalTok{avg\_nonEV\_co2cost }\OtherTok{=} \FunctionTok{mean}\NormalTok{(df\_EV[df\_EV}\SpecialCharTok{$}\NormalTok{ev}\SpecialCharTok{==}\DecValTok{0}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{co2cost)}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{ev, price}\SpecialCharTok{\textless{}}\DecValTok{50}\NormalTok{), }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ co2cost)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{15}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ avg\_EV\_co2cost), }\AttributeTok{color =} \StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{, }\AttributeTok{linetype =} \StringTok{\textquotesingle{}dashed\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{\textquotesingle{}Lifetime CO2 damages (dollars)\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{../output/sample_solution_files/figure-latex/1.Cand1.D-1.pdf}
+
+The average CO2 damages for EVs is \$3237 (blue dotted line on graph).
+The average cost for non-EVs is \$\ensuremath{1.3809\times 10^{4}}. To
+be fair, the non-EV average is misleading since two outliers with very
+low market share (Rolls Royce Phantom and Lamborghini Aventador) also
+have very high CO2 damages. Nevertheless, it's clear fro the histogram
+that 1) all non-EVs have higher CO2 costs than EVs and 2) even among
+mass-market EVs there is significant heterogeneity in CO2 costs.
+
+\hypertarget{part-2}{%
+\section{Part 2}\label{part-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#define market shares}
+\NormalTok{market\_size }\OtherTok{=} \DecValTok{250000000}
+\NormalTok{df\_EV }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{share =}\NormalTok{ quantity }\SpecialCharTok{*} \DecValTok{1000} \SpecialCharTok{/}\NormalTok{ market\_size)}
+\CommentTok{\# define share of outside option}
+\NormalTok{share\_buy }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{share)}
+\NormalTok{s0 }\OtherTok{=} \DecValTok{1}\SpecialCharTok{{-}}\NormalTok{share\_buy}
+\CommentTok{\# define DV}
+\NormalTok{df\_EV }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{lns1s0 =} \FunctionTok{log}\NormalTok{(share}\SpecialCharTok{/}\NormalTok{s0))}
+
+\CommentTok{\# cosmetic changes for the table}
+\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{class }\OtherTok{=} \FunctionTok{factor}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{class)}
+\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{class }\OtherTok{=} \FunctionTok{ref}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{class, }\StringTok{\textquotesingle{}sedan\textquotesingle{}}\NormalTok{)}
+\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{fuel\_cost\_thousands }\OtherTok{=}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{fuel\_cost}\SpecialCharTok{/}\DecValTok{1000}
+
+\NormalTok{logit\_out }\OtherTok{=} \FunctionTok{lm\_robust}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df\_EV,}
+                      \AttributeTok{formula =}\NormalTok{ lns1s0 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ price }\SpecialCharTok{+}\NormalTok{ weight }\SpecialCharTok{+}\NormalTok{ fuel\_cost }\SpecialCharTok{+}\NormalTok{ hp }\SpecialCharTok{+}\NormalTok{ ev)}
+
+\NormalTok{Tab1 }\OtherTok{=} \FunctionTok{modelsummary}\NormalTok{(logit\_out,}
+             \AttributeTok{coef\_map =}\NormalTok{ coef\_map,}
+             \AttributeTok{notes =} \StringTok{\textquotesingle{}The leave{-}out group is sedan\textquotesingle{}}\NormalTok{,}
+             \AttributeTok{title =} \StringTok{\textquotesingle{}Logit Results\textquotesingle{}}\NormalTok{,}
+             \AttributeTok{fmt =} \FunctionTok{fmt\_significant}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\NormalTok{Tab1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:2.A}Logit Results}
+\centering
+\begin{tabular}[t]{lc}
+\toprule
+  & (1)\\
+\midrule
+Price (000s) & \num{-0.0251}\\
+ & (\num{0.0053})\\
+Electric Vehicle & \num{1.3}\\
+ & (\num{1.1})\\
+Weight (tons) & \num{-1.83}\\
+ & (\num{0.71})\\
+Horsepower (00s) & \num{0.49}\\
+ & (\num{0.21})\\
+Constant & \num{-7.11}\\
+ & (\num{0.84})\\
+\midrule
+Num.Obs. & \num{35}\\
+R2 & \num{0.797}\\
+R2 Adj. & \num{0.762}\\
+AIC & \num{94.4}\\
+BIC & \num{105.3}\\
+RMSE & \num{0.76}\\
+\bottomrule
+\multicolumn{2}{l}{\rule{0pt}{1em}The leave-out group is sedan}\\
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{price\_coef }\OtherTok{=}\NormalTok{ logit\_out}\SpecialCharTok{$}\NormalTok{coefficients[}\StringTok{\textquotesingle{}price\textquotesingle{}}\NormalTok{]}
+\NormalTok{ev\_coef }\OtherTok{=}\NormalTok{ logit\_out}\SpecialCharTok{$}\NormalTok{coefficients[}\StringTok{\textquotesingle{}ev\textquotesingle{}}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{b-1}{%
+\subsubsection{2.B}\label{b-1}}
+
+The results indicate a thousand dollar price increase is associated with
+a -2.5\% change in market share, and that EVs have 125.1\% higher market
+share than non-EVs, all else equal. The EV coefficient is not
+statistically significant, but the price effect is.
+
+\hypertarget{c}{%
+\subsubsection{2.C}\label{c}}
+
+I think the estimate of \(\eta\) is biased towards zero. Unobservable
+quality is likely positively correlated with both price and demand,
+which will cause an upwards bias in our coefficient estimate (in this
+case, pushing towards zero). Since the set of observables is not
+\emph{that} rich here, omitted variable bias could be large in
+magnitude.
+
+\hypertarget{part-3}{%
+\section{Part 3}\label{part-3}}
+
+\hypertarget{a-1}{%
+\subsubsection{3.A}\label{a-1}}
+
+Policy incidence falls on the less elastic group. We're assuming
+perfectly elastic supply. Therefore, all of the incidence will fall on
+consumers.
+
+\hypertarget{b-2}{%
+\subsubsection{3.B}\label{b-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{avg\_CO2\_tax }\OtherTok{=} \FunctionTok{mean}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{co2cost)}
+\end{Highlighting}
+\end{Shaded}
+
+The cross-vehicle average CO2 tax is \$\ensuremath{1.0789\times 10^{4}}.
+
+\hypertarget{c-1}{%
+\subsubsection{3.C}\label{c-1}}
+
+In this model, the car's value is
+\(V_j = \eta p_j + \beta X_j + \xi_j\). We want to hold everything
+constant except the a price change, and see how \(V\) changes. Note that
+\(V^{New} - V^{Baseline} = \beta (p^{New} - p^{Baseline})\). I use this
+identity to compute the new Vs. Then, I can back out the market shares
+according to the following formula:
+
+\[
+s_j = \frac{e^{V_j}}{1+\sum_k e^{V_k}}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Step 1: create new price variables (taking care for units!)}
+\NormalTok{cvc\_subsidy }\OtherTok{=} \FloatTok{7.5}
+\NormalTok{df\_EV }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{p1 =}\NormalTok{ price }\SpecialCharTok{+}\NormalTok{ co2cost}\SpecialCharTok{/}\DecValTok{1000}\NormalTok{, }
+         \AttributeTok{p2 =}\NormalTok{ price }\SpecialCharTok{{-}}\NormalTok{ eligible }\SpecialCharTok{*}\NormalTok{ cvc\_subsidy)}
+
+\CommentTok{\# Step 2: create change in price variables}
+\NormalTok{df\_EV }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{del\_p1 =}\NormalTok{p1 }\SpecialCharTok{{-}}\NormalTok{ price, }
+         \AttributeTok{del\_p2 =}\NormalTok{p2 }\SpecialCharTok{{-}}\NormalTok{ price)}
+
+\CommentTok{\# step 3: define V0 from baseline shares}
+\CommentTok{\# (note that this line is redundant but the new variable name makes code easier to read)}
+\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{V0 }\OtherTok{=}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{lns1s0}
+
+\CommentTok{\# step 4: compute new "V"s}
+\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{V1 }\OtherTok{=}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{V0 }\SpecialCharTok{+}\NormalTok{ logit\_out}\SpecialCharTok{$}\NormalTok{coefficients[}\StringTok{\textquotesingle{}price\textquotesingle{}}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{del\_p1}
+\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{V2 }\OtherTok{=}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{V0 }\SpecialCharTok{+}\NormalTok{ logit\_out}\SpecialCharTok{$}\NormalTok{coefficients[}\StringTok{\textquotesingle{}price\textquotesingle{}}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{del\_p2}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Avg V at baseline: \textquotesingle{}}\NormalTok{, }\FunctionTok{mean}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V0), }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Avg V at baseline:  -9.114336
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Avg V with tax: \textquotesingle{}}\NormalTok{, }\FunctionTok{mean}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V1), }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Avg V with tax:  -9.385245
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Avg V with subsidy: \textquotesingle{}}\NormalTok{, }\FunctionTok{mean}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V2), }\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Avg V with subsidy:  -9.071289
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# step 5: compute key term for denominator of share definition}
+\NormalTok{sum\_exp\_V1 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V1))}
+\NormalTok{sum\_exp\_V2 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V2))}
+
+
+\CommentTok{\# step 6: counterfactual market shares}
+\NormalTok{df\_EV }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{s1 =} \FunctionTok{exp}\NormalTok{(V1)}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{sum\_exp\_V1),}
+    \AttributeTok{s2 =} \FunctionTok{exp}\NormalTok{(V2)}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{sum\_exp\_V2)}
+\NormalTok{    )}
+
+\CommentTok{\# Step 7: illustrate with a few vehicles }
+\NormalTok{df\_illustrate }\OtherTok{=}\NormalTok{ df\_EV }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(model }\SpecialCharTok{==} \StringTok{\textquotesingle{}model y\textquotesingle{}} \SpecialCharTok{|}\NormalTok{ model }\SpecialCharTok{==} \StringTok{\textquotesingle{}civic\textquotesingle{}} \SpecialCharTok{|}\NormalTok{ model }\SpecialCharTok{==} \StringTok{\textquotesingle{}tacoma\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(make, model, co2cost, share, s1, s2) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(co2cost)}
+
+\CommentTok{\# total vehicle purchases}
+\NormalTok{sum\_share\_baseline }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{share)}
+\NormalTok{sum\_share\_1 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{s1)}
+\NormalTok{sum\_share\_2 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{s2)}
+\end{Highlighting}
+\end{Shaded}
+
+In the baseline scenario 0.74\% of potential consumers buy a car. In the
+carbon tax scenario, this number decreases to 0.58\%, while in the
+subsidy scenario it increases to 0.78\% (these numbers are the inverse
+of the share for the outside option). Since taxes raise the price of
+vehicles on average, while subsidies decrease the price of vehicles on
+average, the direction of these effects make sense.
+
+\hypertarget{d}{%
+\subsubsection{3.D}\label{d}}
+
+The code for 3.D is given in the 3.C block.
+
+In Table 2 I present market results for three specific vehicles that
+illustrate the main effects. The carbon tax decrease consumption of all
+car types, but the percent reduction in market share is larger for more
+carbon-intensive vehicles (Toyota Tacoma) and smaller for less carbon
+intensive vehicles (Tesla). The EV subsidy increases consumption of the
+Tesla, while having only a minor effect on consumption of the two gas
+vehicles. Importantly, the EV subsidy treats the low-emissions gas car
+(Honda Civic) the same way it treats the Tacoma, which demonstrates that
+the policy does not perfectly target emissions reduction.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kableExtra}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(df\_illustrate, }\AttributeTok{booktabs =}\NormalTok{ T, }\AttributeTok{caption =} \StringTok{\textquotesingle{}Illustration of Policy Effects for Three Vehicles\textquotesingle{}}\NormalTok{,}
+                  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Make\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Model\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Lifetime CO2 costs\textquotesingle{}}\NormalTok{,}
+                                \StringTok{\textquotesingle{}Baseline share\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Carbon tax share\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}EV Subsidy share\textquotesingle{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:3.D.print}Illustration of Policy Effects for Three Vehicles}
+\centering
+\begin{tabular}[t]{llrrrr}
+\toprule
+Make & Model & Lifetime CO2 costs & Baseline share & Carbon tax share & EV Subsidy share\\
+\midrule
+tesla & model y & 3237.018 & 0.0009334 & 0.0008619 & 0.0011263\\
+honda & civic & 9192.808 & 0.0005064 & 0.0004027 & 0.0005062\\
+toyota & tacoma & 16776.875 & 0.0004499 & 0.0002957 & 0.0004497\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\hypertarget{e}{%
+\subsubsection{3.E}\label{e}}
+
+\(\Delta PS = 0\) by assumption. I use the following formulas for the
+other components of surplus change (from the slides, where 1 denotes the
+post-policy value and 0 denotes the pre-policy value).
+
+\[
+\Delta CS = \frac{1}{-\eta} \cdot \left(\log\left(1 + \sum_j e^{V_j^1}\right) - \log \left(1 + \sum_j e^{V_j^0}\right) \right) 
+\] \[
+\Delta G = \sum_j t_j s_j^1 
+\] \[
+\Delta E = \sum_j -\phi_j(s_j^1 - s_j^0)
+\] \[
+\Delta TS = \Delta CS + \Delta G + \Delta E
+\]
+
+And cost/ton of carbon abated is
+\((\Delta CS + \Delta G)/\Delta Carbon\). In cases where
+\(\Delta Carbon\) is negative, I simply report ``undefined''. I present
+results in Table 3.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tax}
+\NormalTok{Del\_CS\_1 }\OtherTok{=} \SpecialCharTok{{-}} \DecValTok{1000}\SpecialCharTok{/}\NormalTok{logit\_out}\SpecialCharTok{$}\NormalTok{coefficients[}\StringTok{\textquotesingle{}price\textquotesingle{}}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ (}
+  \FunctionTok{log}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V1))) }\SpecialCharTok{{-}} \FunctionTok{log}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V0)))}
+\NormalTok{) }\CommentTok{\# note the unit cnversion (multiply by 1000)}
+
+\NormalTok{Del\_G\_1 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{s1 }\SpecialCharTok{*}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{co2cost)}
+\NormalTok{Del\_E\_1 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{co2cost }\SpecialCharTok{*}\NormalTok{ (df\_EV}\SpecialCharTok{$}\NormalTok{s1 }\SpecialCharTok{{-}}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{share))}
+\NormalTok{Del\_TS\_1 }\OtherTok{=}\NormalTok{ Del\_CS\_1 }\SpecialCharTok{+}\NormalTok{ Del\_G\_1 }\SpecialCharTok{+}\NormalTok{ Del\_E\_1}
+
+\NormalTok{Del\_carbon\_1 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{co2 }\SpecialCharTok{*}\NormalTok{ (df\_EV}\SpecialCharTok{$}\NormalTok{s1 }\SpecialCharTok{{-}}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{share))}
+\NormalTok{CE\_1 }\OtherTok{=}\NormalTok{ (Del\_CS\_1 }\SpecialCharTok{+}\NormalTok{ Del\_G\_1)}\SpecialCharTok{/}\NormalTok{Del\_carbon\_1}
+
+\CommentTok{\# Subsidy}
+\NormalTok{Del\_CS\_2 }\OtherTok{=} \SpecialCharTok{{-}} \DecValTok{1000}\SpecialCharTok{/}\NormalTok{logit\_out}\SpecialCharTok{$}\NormalTok{coefficients[}\StringTok{\textquotesingle{}price\textquotesingle{}}\NormalTok{] }\SpecialCharTok{*}\NormalTok{ (}
+  \FunctionTok{log}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V2))) }\SpecialCharTok{{-}} \FunctionTok{log}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(}\FunctionTok{exp}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{V0)))}
+\NormalTok{)}
+
+\NormalTok{Del\_G\_2 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{s2 }\SpecialCharTok{*}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{eligible }\SpecialCharTok{*} \SpecialCharTok{{-}}\DecValTok{7500}\NormalTok{)}
+\NormalTok{Del\_E\_2 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{df\_EV}\SpecialCharTok{$}\NormalTok{co2cost }\SpecialCharTok{*}\NormalTok{ (df\_EV}\SpecialCharTok{$}\NormalTok{s2 }\SpecialCharTok{{-}}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{share))}
+\NormalTok{Del\_TS\_2 }\OtherTok{=}\NormalTok{ Del\_CS\_2 }\SpecialCharTok{+}\NormalTok{ Del\_G\_2 }\SpecialCharTok{+}\NormalTok{ Del\_E\_2}
+
+\NormalTok{Del\_carbon\_2 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(df\_EV}\SpecialCharTok{$}\NormalTok{co2 }\SpecialCharTok{*}\NormalTok{ (df\_EV}\SpecialCharTok{$}\NormalTok{s2 }\SpecialCharTok{{-}}\NormalTok{ df\_EV}\SpecialCharTok{$}\NormalTok{share))}
+\NormalTok{CE\_2 }\OtherTok{=}\NormalTok{ (Del\_CS\_2 }\SpecialCharTok{+}\NormalTok{ Del\_G\_2)}\SpecialCharTok{/}\NormalTok{Del\_carbon\_2}
+\NormalTok{CE\_2 }\OtherTok{=} \StringTok{\textquotesingle{}Undefined\textquotesingle{}} \CommentTok{\# ad{-}hoc change since this is \textless{} 0...}
+
+\NormalTok{Surplus\_Tab }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}
+  \StringTok{\textquotesingle{}Label\textquotesingle{}} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Change in CS ($/consumer{-}year)\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Change in PS ($/consumer{-}year)\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Change in G ($/consumer{-}year)\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Change in E ($/consumer{-}year)\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Change in TS ($/consumer{-}year)\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Cost{-}effectiveness ($/ton of CO2 abated)\textquotesingle{}}\NormalTok{),}
+  \StringTok{\textquotesingle{}CO2 Tax\textquotesingle{}} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{c}\NormalTok{(Del\_CS\_1, }\DecValTok{0}\NormalTok{, Del\_G\_1, Del\_E\_1, Del\_TS\_1, CE\_1),}\DecValTok{0}\NormalTok{),}
+  \StringTok{\textquotesingle{}EV Subsidy\textquotesingle{}} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\FunctionTok{round}\NormalTok{(}\FunctionTok{c}\NormalTok{(Del\_CS\_2, }\DecValTok{0}\NormalTok{, Del\_G\_2, Del\_E\_2, Del\_TS\_2),}\DecValTok{0}\NormalTok{),CE\_2)}
+\NormalTok{)}
+
+\NormalTok{kableExtra}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(Surplus\_Tab, }\AttributeTok{booktabs =}\NormalTok{ T, }\AttributeTok{caption =} \StringTok{\textquotesingle{}Effect of Policies on Surplus\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:3.E}Effect of Policies on Surplus}
+\centering
+\begin{tabular}[t]{lrl}
+\toprule
+Label & CO2.Tax & EV.Subsidy\\
+\midrule
+Change in CS (\$/consumer-year) & -64 & 17\\
+Change in PS (\$/consumer-year) & 0 & 0\\
+Change in G (\$/consumer-year) & 55 & -19\\
+Change in E (\$/consumer-year) & 20 & -1\\
+Change in TS (\$/consumer-year) & 10 & -3\\
+\addlinespace
+Cost-effectiveness (\$/ton of CO2 abated) & 90 & Undefined\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\hypertarget{part-4-summary}{%
+\section{Part 4: Summary}\label{part-4-summary}}
+
+Conceptually, a carbon tax will have a more positive impact on total
+surplus than an EV subsidy for at least two reasons.
+
+First, a carbon tax induces socially beneficial substitution away from
+more carbon-intensive gas-using vehicles and towards less
+carbon-intensive gas-using vehicles (e.g, from the Tacoma to the Civic).
+The histogram in figure 4 demonstrates that there is significant
+heterogeneity in externality costs even across gas-using vehicles, so
+these gains may be important.
+
+Second, the carbon tax discourages EV consumption relative to the
+outside option of not buying a car, while the EV subsidy encourages EV
+consumption. Since EVs do use carbon, this effect is undesirable. The
+subsidy is good to the extent that it encourages substitution from
+carbon-intensive cars to EVs but bad to the extent that it encourages
+substitution from not driving to EVs. The overall change in externality
+(and therefore the overall change in total surplus) is negative in this
+example because the bad type of substitution outweighs the good type of
+substitution.
+
+The above is a sound policy argument in favor of the carbon tax. Howver,
+the distributional consequences of the two policies are drastically
+different. The carbon tax hurts consumers and increases government
+revenue, but the EV subsidy benefits consumers and decreases government
+revenue. To the extent that government revenue is redistributed to
+people with high marginal values of money (e.g, through welfare payments
+or social insurance), this may constitute a distributional argument in
+favor of the carbon tax. If you believe government funds are less
+valuable, this argument has less bite.
+
+In practice, this difference may explain why EV subsidies are more
+politically feasible than carbon taxes. The government costs and
+benefits are diffuse and consumers may not notice the marginal impact of
+the extra tax revenue, while consumers do notice extra costs every time
+they go to the gas pump or a large discount on their electric vehicle
+purchase.
+
+We made many modelling assumptions here. I think the most important one
+was that our demand estimation was unconfounded. It seems plausible that
+unobservable quality would be correlated with price. If this was true,
+then consumers are more elastic than our estimates indicate. Higher
+elasticities amplify responses to taxes and subsidies, so this story
+would mean our estimates of the surplus changes were all biased towards
+zero.
+
+\end{document}

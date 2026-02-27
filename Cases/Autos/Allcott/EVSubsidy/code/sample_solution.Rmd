@@ -1,0 +1,282 @@
+---
+title: "Problem Set 5 Sample Solutions"
+author: "Matt Brown"
+date: "2023-05-10"
+output:
+  pdf_document: 
+    extra_dependencies: ["booktabs"]
+    keep_tex: TRUE
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE) 
+
+
+# Set working directory
+#setwd("/Users/mattbrown/Dropbox/My Mac (Matt’s MacBook Pro)/Documents/Teaching/EnvEconClass/homework/EVSubsidy")
+
+# clear any existing data
+rm(list = ls()) 
+
+# Load libraries
+library(ggplot2)
+library(tidyverse)
+library(fixest)
+library(modelsummary)
+library(estimatr)
+
+# ggplot theme
+theme_set(theme_bw() + theme(legend.position = 'bottom') +
+            theme(axis.title=element_text(size = 16)) +
+            theme(legend.title =element_text(size = 16)) +
+            theme(strip.text = element_text(size = 14)) +
+            theme(axis.text = element_text(size = 12)) +
+            theme(legend.text = element_text(size = 14))
+)
+
+
+setFixest_etable(style.tex =style.tex('aer'), markdown = TRUE)
+
+# load data
+df_EV = read.csv('../raw/CA_vehicle_data.csv')
+
+coef_map = c('price' = 'Price (000s)',
+             'ev' = 'Electric Vehicle',
+             'classsedan' = 'Sedan',
+             'classsuv' = 'SUV',
+             'classpickup' = 'Pickup',
+             'fuel_cost_thousands' = 'Fuel Cost (000s)',
+             'weight' = 'Weight (tons)',
+             'hp' = 'Horsepower (00s)',
+             '(Intercept)' = 'Constant')
+
+#Check to see if this changes results:
+#df_EV = df_EV %>% mutate(eligible = if_else(model == 'f-150', 0, eligible))
+```
+
+# Part 1
+
+
+### 1.A
+```{r 1.A}
+ggplot(data = df_EV, aes(x = price, y = quantity)) + 
+  geom_point() +
+  geom_smooth(method = 'lm', color = 'grey', se = FALSE, linetype = 'dashed') + 
+  geom_hline(aes(yintercept = 0)) + geom_vline(aes(xintercept = 0)) +
+  labs(x = 'Price ($000s)', y = 'Quantity (000s)')
+```
+
+### 1.B
+
+This relationship is not plausibly causal. The plot shows that expensive vehicles are purchased less, which is consistent with the standard intuition of a (causal) downward sloping demand curve. However, confounders could also create a relationship between price and quantity. For example, if higher quality vehicles are also more expensive (seems plausible!) then there would be a spurious *positive* relationship between price and quantity. If quality is an omitted variable, then the true causal effect of price on quantity is steeper than the best fit line in this plot.
+
+### 1.C and 1.D
+```{r 1.Cand1.D}
+scc = 190 # social cost of carbon
+df_EV = df_EV %>% mutate(co2cost = co2*scc)
+
+avg_EV_co2cost = mean(df_EV[df_EV$ev==1,]$co2cost)
+avg_nonEV_co2cost = mean(df_EV[df_EV$ev==0,]$co2cost)
+
+ggplot(data = df_EV %>% filter(!ev, price<50), aes(x = co2cost)) +
+  geom_histogram(bins = 15) + 
+  geom_vline(aes(xintercept = avg_EV_co2cost), color = 'blue', linetype = 'dashed') +
+  labs(x = 'Lifetime CO2 damages (dollars)')
+```
+
+The average CO2 damages for EVs is \$`r round(avg_EV_co2cost, 0)` (blue dotted line on graph). The average cost for non-EVs is \$`r round(avg_nonEV_co2cost, 0)`. To be fair, the non-EV average is misleading since two outliers with very low market share (Rolls Royce Phantom and Lamborghini Aventador) also have very high CO2 damages. Nevertheless, it's clear fro the histogram that 1) all non-EVs have higher CO2 costs than EVs and 2) even among mass-market EVs there is significant heterogeneity in CO2 costs.
+
+# Part 2
+
+```{r 2.A}
+
+#define market shares
+market_size = 250000000
+df_EV = df_EV %>% mutate(share = quantity * 1000 / market_size)
+# define share of outside option
+share_buy = sum(df_EV$share)
+s0 = 1-share_buy
+# define DV
+df_EV = df_EV %>% mutate(lns1s0 = log(share/s0))
+
+# cosmetic changes for the table
+df_EV$class = factor(df_EV$class)
+df_EV$class = ref(df_EV$class, 'sedan')
+df_EV$fuel_cost_thousands = df_EV$fuel_cost/1000
+
+logit_out = lm_robust(data = df_EV,
+                      formula = lns1s0 ~ price + weight + fuel_cost + hp + ev)
+
+Tab1 = modelsummary(logit_out,
+             coef_map = coef_map,
+             notes = 'The leave-out group is sedan',
+             title = 'Logit Results',
+             fmt = fmt_significant(2))
+Tab1
+
+price_coef = logit_out$coefficients['price']
+ev_coef = logit_out$coefficients['ev']
+```
+
+### 2.B
+
+The results indicate a thousand dollar price increase is associated with a `r round(price_coef*100, 1)`\% change in market share, and that EVs have `r round(ev_coef*100, 1)`% higher market share than non-EVs, all else equal. The EV coefficient is not statistically significant, but the price effect is.
+
+### 2.C
+
+I think the estimate of $\eta$ is biased towards zero. Unobservable quality is likely positively correlated with both price and demand, which will cause an upwards bias in our coefficient estimate (in this case, pushing towards zero). Since the set of observables is not *that* rich here, omitted variable bias could be large in magnitude. 
+
+# Part 3
+
+### 3.A
+
+Policy incidence falls on the less elastic group. We're assuming perfectly elastic supply. Therefore, all of the incidence will fall on consumers. 
+
+### 3.B
+
+```{r 3.B}
+avg_CO2_tax = mean(df_EV$co2cost)
+```
+
+The cross-vehicle average CO2 tax is \$`r round(avg_CO2_tax,0)`.
+
+### 3.C
+
+In this model, the car's value is $V_j = \eta p_j + \beta X_j + \xi_j$. We want to hold everything constant except the a price change, and see how $V$ changes. Note that $V^{New} - V^{Baseline} = \beta (p^{New} - p^{Baseline})$. I use this identity to compute the new Vs. Then, I can back out the market shares according to the following formula:
+
+$$
+s_j = \frac{e^{V_j}}{1+\sum_k e^{V_k}}
+$$
+
+```{r 3.C}
+# Step 1: create new price variables (taking care for units!)
+cvc_subsidy = 7.5
+df_EV = df_EV %>%
+  mutate(p1 = price + co2cost/1000, 
+         p2 = price - eligible * cvc_subsidy)
+
+# Step 2: create change in price variables
+df_EV = df_EV %>%
+  mutate(del_p1 =p1 - price, 
+         del_p2 =p2 - price)
+
+# step 3: define V0 from baseline shares
+# (note that this line is redundant but the new variable name makes code easier to read)
+df_EV$V0 = df_EV$lns1s0
+
+# step 4: compute new "V"s
+df_EV$V1 = df_EV$V0 + logit_out$coefficients['price'] * df_EV$del_p1
+df_EV$V2 = df_EV$V0 + logit_out$coefficients['price'] * df_EV$del_p2
+
+cat('Avg V at baseline: ', mean(df_EV$V0), '\n')
+cat('Avg V with tax: ', mean(df_EV$V1), '\n')
+cat('Avg V with subsidy: ', mean(df_EV$V2), '\n')
+
+# step 5: compute key term for denominator of share definition
+sum_exp_V1 = sum(exp(df_EV$V1))
+sum_exp_V2 = sum(exp(df_EV$V2))
+
+
+# step 6: counterfactual market shares
+df_EV = df_EV %>%
+  mutate(
+    s1 = exp(V1)/(1+sum_exp_V1),
+    s2 = exp(V2)/(1+sum_exp_V2)
+    )
+
+# Step 7: illustrate with a few vehicles 
+df_illustrate = df_EV %>% 
+  filter(model == 'model y' | model == 'civic' | model == 'tacoma') %>%
+  select(make, model, co2cost, share, s1, s2) %>%
+  arrange(co2cost)
+
+# total vehicle purchases
+sum_share_baseline = sum(df_EV$share)
+sum_share_1 = sum(df_EV$s1)
+sum_share_2 = sum(df_EV$s2)
+```
+
+In the baseline scenario `r round(sum_share_baseline*100,2)`% of potential consumers buy a car. In the carbon tax scenario, this number decreases to `r round(sum_share_1*100,2)`%, while in the subsidy scenario it increases to `r round(sum_share_2*100,2)`% (these numbers are the inverse of the share for the outside option). Since taxes raise the price of vehicles on average, while subsidies decrease the price of vehicles on average, the direction of these effects make sense.
+
+
+### 3.D
+
+The code for 3.D is given in the 3.C block.
+
+In Table 2 I present market results for three specific vehicles that illustrate the main effects. The carbon tax decrease consumption of all car types, but the percent reduction in market share is larger for more carbon-intensive vehicles (Toyota Tacoma) and smaller for less carbon intensive vehicles (Tesla). The EV subsidy increases consumption of the Tesla, while having only a minor effect on consumption of the two gas vehicles. Importantly, the EV subsidy treats the low-emissions gas car (Honda Civic) the same way it treats the Tacoma, which demonstrates that the policy does not perfectly target emissions reduction.
+
+```{r 3.D.print}
+kableExtra::kable(df_illustrate, booktabs = T, caption = 'Illustration of Policy Effects for Three Vehicles',
+                  col.names = c('Make', 'Model', 'Lifetime CO2 costs',
+                                'Baseline share', 'Carbon tax share', 'EV Subsidy share'))
+```
+
+### 3.E
+
+$\Delta PS = 0$ by assumption. I use the following formulas for the other components of surplus change (from the slides, where 1 denotes the post-policy value and 0 denotes the pre-policy value). 
+
+$$
+\Delta CS = \frac{1}{-\eta} \cdot \left(\log\left(1 + \sum_j e^{V_j^1}\right) - \log \left(1 + \sum_j e^{V_j^0}\right) \right) 
+$$
+$$
+\Delta G = \sum_j t_j s_j^1 
+$$
+$$
+\Delta E = \sum_j -\phi_j(s_j^1 - s_j^0)
+$$
+$$
+\Delta TS = \Delta CS + \Delta G + \Delta E
+$$
+
+And cost/ton of carbon abated is $(\Delta CS + \Delta G)/\Delta Carbon$. In cases where $\Delta Carbon$ is negative, I simply report "undefined". I present results in Table 3.
+```{r 3.E}
+
+# Tax
+Del_CS_1 = - 1000/logit_out$coefficients['price'] * (
+  log(1 + sum(exp(df_EV$V1))) - log(1 + sum(exp(df_EV$V0)))
+) # note the unit cnversion (multiply by 1000)
+
+Del_G_1 = sum(df_EV$s1 * df_EV$co2cost)
+Del_E_1 = sum(-df_EV$co2cost * (df_EV$s1 - df_EV$share))
+Del_TS_1 = Del_CS_1 + Del_G_1 + Del_E_1
+
+Del_carbon_1 = sum(df_EV$co2 * (df_EV$s1 - df_EV$share))
+CE_1 = (Del_CS_1 + Del_G_1)/Del_carbon_1
+
+# Subsidy
+Del_CS_2 = - 1000/logit_out$coefficients['price'] * (
+  log(1 + sum(exp(df_EV$V2))) - log(1 + sum(exp(df_EV$V0)))
+)
+
+Del_G_2 = sum(df_EV$s2 * df_EV$eligible * -7500)
+Del_E_2 = sum(-df_EV$co2cost * (df_EV$s2 - df_EV$share))
+Del_TS_2 = Del_CS_2 + Del_G_2 + Del_E_2
+
+Del_carbon_2 = sum(df_EV$co2 * (df_EV$s2 - df_EV$share))
+CE_2 = (Del_CS_2 + Del_G_2)/Del_carbon_2
+CE_2 = 'Undefined' # ad-hoc change since this is < 0...
+
+Surplus_Tab = data.frame(
+  'Label' = c('Change in CS ($/consumer-year)', 'Change in PS ($/consumer-year)', 'Change in G ($/consumer-year)', 'Change in E ($/consumer-year)', 'Change in TS ($/consumer-year)', 'Cost-effectiveness ($/ton of CO2 abated)'),
+  'CO2 Tax' = round(c(Del_CS_1, 0, Del_G_1, Del_E_1, Del_TS_1, CE_1),0),
+  'EV Subsidy' = c(round(c(Del_CS_2, 0, Del_G_2, Del_E_2, Del_TS_2),0),CE_2)
+)
+
+kableExtra::kable(Surplus_Tab, booktabs = T, caption = 'Effect of Policies on Surplus')
+```
+
+# Part 4: Summary
+
+Conceptually, a carbon tax will have a more positive impact on total surplus than an EV subsidy for at least two reasons. 
+
+First, a carbon tax induces socially beneficial substitution away from more carbon-intensive gas-using vehicles and towards less carbon-intensive gas-using vehicles (e.g, from the Tacoma to the Civic). The histogram in figure 4 demonstrates that there is significant heterogeneity in externality costs even across gas-using vehicles, so these gains may be important.
+
+Second, the carbon tax discourages EV consumption relative to the outside option of not buying a car, while the EV subsidy encourages EV consumption. Since EVs do use carbon, this effect is undesirable. The subsidy is good to the extent that it encourages substitution from carbon-intensive cars to EVs but bad to the extent that it encourages substitution from not driving to EVs. The overall change in externality (and therefore the overall change in total surplus) is negative in this example because the bad type of substitution outweighs the good type of substitution.
+ 
+The above is a sound policy argument in favor of the carbon tax. Howver, the distributional consequences of the two policies are drastically different. The carbon tax hurts consumers and increases government revenue, but the EV subsidy benefits consumers and decreases government revenue. To the extent that government revenue is redistributed to people with high marginal values of money (e.g, through welfare payments or social insurance), this may constitute a distributional argument in favor of the carbon tax. If you believe government funds are less valuable, this argument has less bite.
+
+In practice, this difference may explain why EV subsidies are more politically feasible than carbon taxes. The government costs and benefits are diffuse and consumers may not notice the marginal impact of the extra tax revenue, while consumers do notice extra costs every time they go to the gas pump or a large discount on their electric vehicle purchase.
+
+We made many modelling assumptions here. I think the most important one was that our demand estimation was unconfounded. It seems plausible that unobservable quality would be correlated with price. If this was true, then consumers are more elastic than our estimates indicate. Higher elasticities amplify responses to taxes and subsidies, so this story would mean our estimates of the surplus changes were all biased towards zero.
+

@@ -1,0 +1,26 @@
+Running Rmarkdown script: code/sample_solution.Rmd...
+
+
+processing file: sample_solution.Rmd
+1/17            
+2/17 [setup]    
+3/17            
+4/17 [1.A]      
+5/17            
+6/17 [1.Cand1.D]
+7/17            
+8/17 [2.A]      
+9/17            
+10/17 [3.B]      
+11/17            
+12/17 [3.C]      
+13/17            
+14/17 [3.D.print]
+15/17            
+16/17 [3.E]      
+17/17            
+output file: sample_solution.knit.md
+
+/Users/arjunsrinivasan/anaconda3/bin/pandoc +RTS -K512m -RTS sample_solution.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output ../output/sample_solution.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --highlight-style tango --pdf-engine pdflatex --variable graphics --variable 'geometry:margin=1in' --include-in-header /var/folders/2x/5hz_8fp100v616mz7vn9qdmw0000gn/T//Rtmp18ng9l/rmarkdown-str969048155751.html 
+
+Output created: ../output/sample_solution.pdf
